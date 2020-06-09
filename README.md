@@ -12,17 +12,17 @@ You may **clone** this repository and open the folder with **Android Studio**. Y
 ### Step 1
 Choose **Pixel 3 XL** as android device. Then click **Next**.
 
-<p align="center"><img height="500px" src="./Images/Step1.PNG"></p>
+<p align="center"><img height="500px" src="./Images/Step1.png"></p>
 
 ### Step 2
 Choose **Lollipop** as android system image or operating system. If you haven't downloaded it yet, just click the **Download Link** button beside **Lollipop**. It will take some time depending on your internet connection. After downloading, click **Next**. Boot it up and you now have an AVD or *Android Virtual Device*!
 
-<p align="center"><img height="500px" src="./Images/Step2.PNG"></p>
+<p align="center"><img height="500px" src="./Images/Step2.png"></p>
 
 ## Tip
 For developers with low specs computers, it will be better to download Android Lollipop instead of Android R as the former is lighter than the latter.
 
-<p align="center"><img src="./Images/Rvs22.PNG"></p>
+<p align="center"><img src="./Images/Rvs22.png"></p>
 
 As what you can see on the **Size on Disk** column, Lollipop only consumes **~5.4 GB** while Android R consumes **~8.9 GB**. Both of them does not have **Google Playstore** so that will really make Android R *heavier* than it already is. Also, based on my experience, Android Lollipop boots a lot faster than Android R.
 
