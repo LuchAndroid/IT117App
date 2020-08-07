@@ -17,7 +17,7 @@ import java.util.Random;
 public class Randomizer extends AppCompatActivity {
 
     EditText txtName, txtAmount, txtBet1, txtBet2, txtBet3, txtBet4, txtBet5, txtBet6, txtRandom1, txtRandom2, txtRandom3, txtRandom4, txtRandom5, txtRandom6;
-    Button btnPlaceBet, btnShow, btnStart;
+    Button btnPlaceBet, btnShowBets, btnShowResults, btnStart;
     TextView lblResult;
 
     Random rnd = new Random();
@@ -25,20 +25,25 @@ public class Randomizer extends AppCompatActivity {
     final Handler myHandler = new Handler();
 
     long startTime;
-    int ctr = 0;
+    int lottoBallCounter = 0;
     final double jackpot = 50000000;
-    Integer num;
 
     //Arrays
     int[] lottoBet = new int[6], lottoResult = new int[6];
     EditText[] arrRandoms, arrBets;
 
     // ArrayLists
-    ArrayList<Integer> arrLottoBalls;
-    ArrayList<Integer> arrCount;
-    ArrayList<String> arrPlayers;
-    ArrayList<String> arrMessages;
-    ArrayList<int[]> arrLottoBets;
+    ArrayList<Integer> listLottoBalls;
+    ArrayList<String> listPlayers;
+    ArrayList<int[]> listLottoBets;
+
+    // Arrays During Deciding of Winners and Prizes
+    int[] arrMatchCount;
+    String[] arrMatchNumbers;
+    String[] arrPrizes;
+
+    // Display Dialogs for Player List and Winner List
+    DialogWith2Buttons dialogPlayers, dialogWinners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +51,15 @@ public class Randomizer extends AppCompatActivity {
         setContentView(R.layout.activity_randomizer);
 
         // Initialize ArrayList and Arrays
-        arrPlayers = new ArrayList<>();
-        arrCount = new ArrayList<>();
-        arrMessages = new ArrayList<>();
-        arrLottoBets = new ArrayList<>();
-        arrLottoBalls = new ArrayList<>();
+        listLottoBalls = new ArrayList<>();
+        listPlayers = new ArrayList<>();
+        listLottoBets = new ArrayList<>();
         generateLottoNumbers();
 
         // Initialize Filter
         numFilter = new InputFilterMinMaxInteger(1,58);
 
-        // Initialize
+        // Initialize Components/Views
         txtName = findViewById(R.id.txtName);
         txtAmount = findViewById(R.id.txtAmount);
         txtBet1 = findViewById(R.id.txtBet1);
@@ -73,10 +76,12 @@ public class Randomizer extends AppCompatActivity {
         txtRandom6 = findViewById(R.id.txtRandom6);
         btnPlaceBet = findViewById(R.id.btnPlaceBet);
         btnStart = findViewById(R.id.btnStart);
-        btnShow = findViewById(R.id.btnShow);
+        btnShowBets = findViewById(R.id.btnShowBets);
+        btnShowResults = findViewById(R.id.btnShowResults);
         lblResult = findViewById(R.id.lblResult);
         arrRandoms = new EditText[] {txtRandom1, txtRandom2, txtRandom3, txtRandom4, txtRandom5, txtRandom6};
         arrBets = new EditText[] {txtBet1, txtBet2, txtBet3, txtBet4, txtBet5, txtBet6};
+
         // Set Filters
         for (int i = 0; i < arrBets.length; i++) {
             arrBets[i].setFilters(new InputFilter[]{ numFilter });
@@ -97,14 +102,22 @@ public class Randomizer extends AppCompatActivity {
                     arrBets[i].clearFocus();
                 }
             }
+            if(txtName.getText().toString().trim().isEmpty()){
+                MsgBox("Name must not be empty.");
+                return;
+            }
             if(isUnique(0)){
                 // Add LottoBets to ArrayList
-                arrLottoBets.add(lottoBet.clone());
+                listLottoBets.add(lottoBet.clone());
                 // Add Player to ArrayList
-                arrPlayers.add(txtName.getText().toString());
+                listPlayers.add(txtName.getText().toString());
                 // Other Effects
                 txtName.setText("");
                 for(EditText et: arrBets) et.setText("");
+                for (int i = 0; i < arrBets.length; i++) {
+                    arrBets[i].setText("");
+                    lottoBet[i] = 0;
+                }
             }else{
                 MsgBox("One or more lotto numbers is/are 0. Choose from 1-58 only.");
             }
@@ -112,21 +125,41 @@ public class Randomizer extends AppCompatActivity {
 
         btnStart.setOnClickListener(v -> {
             // Clear first the lotto result
-            for(EditText et: arrRandoms){
-                et.setText("");
+            if(lottoBallCounter == 0){
+                for(EditText et: arrRandoms){
+                    et.setText("");
+                }
             }
             startTime = System.currentTimeMillis();
             btnStart.setEnabled(false);
-            setRandomInteger(arrRandoms[ctr]);
+            setRandomInteger(arrRandoms[lottoBallCounter]);
         });
 
-        btnShow.setOnClickListener(v -> {
-            String message = "";
-            for(int i = 0; i < arrPlayers.size(); i++){
-                message += arrPlayers.get(i) +" - "+Arrays.toString(arrLottoBets.get(i))+"\n";
+        btnShowBets.setOnClickListener(v -> displayPlayers());
+        btnShowResults.setOnClickListener(v -> displayWinners());
+
+        // Instantiate Reusable Alert Dialogs
+        dialogPlayers = new DialogWith2Buttons("List of Players", "OK", "Clear Bets", Randomizer.this) {
+            @Override
+            public void onPostiveClick() { }
+            @Override
+            public void onNegativeClick() {
+                listPlayers.clear();
+                listLottoBets.clear();
             }
-            DisplayDialog.openDialog("List of Players", message, getSupportFragmentManager(), "");
-        });
+        };
+        dialogWinners = new DialogWith2Buttons("Lotto Results", "OK", "Clear Bets", Randomizer.this) {
+            @Override
+            public void onPostiveClick() {
+
+            }
+
+            @Override
+            public void onNegativeClick() {
+                listPlayers.clear();
+                listLottoBets.clear();
+            }
+        };
     }
 
     private void getLottoBets(){
@@ -142,16 +175,17 @@ public class Randomizer extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+
                 if (System.currentTimeMillis() - startTime < 1000) {
                     myHandler.postDelayed(this, 100);
-                    num = arrLottoBalls.get(randomNumber(0,arrLottoBalls.size()-1));
+                    int num = listLottoBalls.get(randomNumber(0,listLottoBalls.size()-1));
                     et.setText(num+"");
                 }else{
                     myHandler.removeCallbacks(this);
-                    arrLottoBalls.remove(num);
-                    ctr++;
+                    removeFromLottoNumbers(et);
+                    lottoBallCounter++;
                     if(!btnStart.isEnabled()){
-                        displayResult();
+                        processResult();
                     }
                 }
             }
@@ -163,9 +197,9 @@ public class Randomizer extends AppCompatActivity {
         return rnd.nextInt(max + 1 - min) + min;
     }
 
-    private void displayResult(){
+    private void processResult(){
         btnStart.setEnabled(true);
-        if(ctr < arrRandoms.length){
+        if(lottoBallCounter < arrRandoms.length){
             btnStart.performClick();
         }else{
             // Get Results
@@ -175,31 +209,48 @@ public class Randomizer extends AppCompatActivity {
             lottoResult[3] = Integer.parseInt(txtRandom4.getText().toString());
             lottoResult[4] = Integer.parseInt(txtRandom5.getText().toString());
             lottoResult[5] = Integer.parseInt(txtRandom6.getText().toString());
+
+            // Initialize Arrays for Winners and Prizes
+            arrMatchCount = new int[listPlayers.size()];
+            arrMatchNumbers = new String[listPlayers.size()];
+            arrPrizes = new String[listPlayers.size()];
+
             // Check each player if they won
-            for(int i=0; i < arrPlayers.size(); i++){
+            for(int i=0; i < listPlayers.size(); i++){
                 int count = 0;
                 String temp = "";
-                for (int j = 0; j < arrLottoBets.get(0).length; j++){
+                for (int j = 0; j < listLottoBets.get(0).length; j++){
                     for(int k = 0; k < lottoResult.length; k++){
-                        if(arrLottoBets.get(i)[j] == lottoResult[k]){
+                        if(listLottoBets.get(i)[j] == lottoResult[k]){
                             count++;
-                            arrCount.add(count);
-                            temp+=arrLottoBets.get(i)[j]+" ";
+                            arrMatchCount[i] = count;
+                            temp+=listLottoBets.get(i)[j]+" ";
                         }
                     }
                 }
-                arrMessages.add(arrPlayers.get(i)+" - "+count+" matches "+(temp.isEmpty()?"":"("+temp.trim()+")"));
+                arrMatchNumbers[i] = count == 0 ? "" : String.format(" (%s)", temp.trim());
             }
-            getPrizes(6, 100);
-            getPrizes(5, 50);
-            getPrizes(4, 20);
-            getPrizes(3, 0);
-            DisplayDialog.openDialog("Lotto Result", createAnnouncement(), getSupportFragmentManager(), "");
+            if(hasWinners()){
+                getPrizes(6, 100);
+                getPrizes(5, 50);
+                getPrizes(4, 20);
+                getPrizes(3, 0);
+            }
+
+            // Display Lotto Results
+            btnShowResults.performClick();
 
             // Reset Everything After Lotto Draw
-            ctr = 0;
+            lottoBallCounter = 0;
             generateLottoNumbers();
         }
+    }
+
+    private boolean hasWinners(){
+        for (int i = 0; i < arrMatchCount.length; i++) {
+            if(arrMatchCount[i] >= 3) return true;
+        }
+        return false;
     }
 
     private void getPrizes(int numMatches, double percent){
@@ -207,40 +258,66 @@ public class Randomizer extends AppCompatActivity {
         int ctr = 0;
         double prize = 0;
         String strIndexes="";
-        for (int i = 0; i < arrCount.size(); i++) {
-            if(arrCount.get(i) == numMatches){
+        for (int i = 0; i < arrMatchCount.length; i++) {
+            if(arrMatchCount[i] == numMatches){
                 ctr++;
                 strIndexes += i+" ";
             }
         }
         if(ctr != 0){
+            // Decide for Prize
             if(percent != 0){
                 prize = jackpot * (percent/100) / ctr;
             }else{
                 prize = 5000;
             }
+            // Look for Winners of Prizes
             for(String str: strIndexes.split(" ")){
-                int i = Integer.parseInt(str);
-                String temp = arrMessages.get(i);
-                arrMessages.set(i, String.format("%s [%,3.2f]", temp,prize));
+                int index = Integer.parseInt(str);
+                arrPrizes[index] = String.format(" [%,3.2f]", prize);
             }
         }
     }
 
     private void generateLottoNumbers(){
+        listLottoBalls.clear();
         for (int i = 1; i <= 58; i++){
-            arrLottoBalls.add(i);
+            listLottoBalls.add(i);
+        }
+    }
+
+    private void removeFromLottoNumbers(EditText et){
+        int num = Integer.parseInt(et.getText().toString());
+        for(int i=0; i < listLottoBalls.size(); i++){
+            if(listLottoBalls.get(i).intValue() == num){
+                listLottoBalls.remove(i);
+                break;
+            }
         }
     }
 
     private String createAnnouncement(){
         String message = "";
-        for(String str: arrMessages){
-            message+=str+"\n";
+        if(arrMatchCount != null){
+            for (int i = 0; i < listPlayers.size(); i++) {
+                message += String.format("%s - %d%s%s%s\n",listPlayers.get(i), arrMatchCount[i], arrMatchCount[i] <= 1 ? " match": " matches", arrMatchNumbers[i], arrPrizes[i] == null? "" : arrPrizes[i]);
+            }
         }
-        arrCount.clear();
-        arrMessages.clear();
         return message;
+    }
+
+    private void displayPlayers(){
+        String message = "";
+        for(int i = 0; i < listPlayers.size(); i++){
+            message += listPlayers.get(i) +" - "+Arrays.toString(listLottoBets.get(i))+"\n";
+        }
+        dialogPlayers.setMessage(message);
+        dialogPlayers.openDialog();
+    }
+
+    private void displayWinners(){
+        dialogWinners.setMessage(createAnnouncement());
+        dialogWinners.openDialog();
     }
 
     private void MsgBox(String message){

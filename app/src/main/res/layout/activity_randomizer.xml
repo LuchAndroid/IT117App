@@ -156,7 +156,7 @@
             android:textSize="24sp" />
 
         <Button
-            android:id="@+id/btnShow"
+            android:id="@+id/btnShowBets"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SHOW BETS"
@@ -265,12 +265,26 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="200dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="START LOTTO"
-        android:textSize="24sp" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="START LOTTO"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btnShowResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHOW RESULTS"
+            android:textSize="24sp" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
