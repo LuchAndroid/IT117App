@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SimpleCalculator extends AppCompatActivity {
+public class SimpleCalculator extends BaseActivity {
     //Declare Variables
     EditText etNum1, etNum2;
     Button btnAdd, btnSubtract, btnMultiply, btnDivide, btnRemainder, btnClose;
@@ -20,7 +20,6 @@ public class SimpleCalculator extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simple_calculator);
         // Instantiate Components
         tvResult = findViewById(R.id.tvResult);
         etNum1 = findViewById(R.id.etNum1);
@@ -38,6 +37,16 @@ public class SimpleCalculator extends AppCompatActivity {
         btnDivide.setOnClickListener(v->divide());
         btnRemainder.setOnClickListener(v->remainder());
         btnClose.setOnClickListener(v->close());
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_simple_calculator;
+    }
+
+    @Override
+    protected String getActivityName() {
+        return "Activity 1";
     }
 
     private void add(){

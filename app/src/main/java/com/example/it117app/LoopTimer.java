@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class LoopTimer extends AppCompatActivity {
+public class LoopTimer extends BaseActivity {
 
     TextView lblTimer, lblStart, lblEnd, lblElapsed;
     Button btnStart, btnStop;
@@ -25,7 +25,6 @@ public class LoopTimer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loop_timer);
 
         // Instantiate
         lblTimer = findViewById(R.id.lblTimer);
@@ -56,6 +55,16 @@ public class LoopTimer extends AppCompatActivity {
             btnStop.setEnabled(false);
             lblTimer.setText("00:00:00");
         });
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_loop_timer;
+    }
+
+    @Override
+    protected String getActivityName() {
+        return "Activity 4";
     }
 
     private Runnable runningTime = new Runnable() {

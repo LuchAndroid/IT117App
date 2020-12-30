@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class Selection extends AppCompatActivity {
+public class Selection extends BaseActivity {
 
     EditText txtName, txtSalary, txtCode;
     TextView lblNet;
@@ -20,7 +20,6 @@ public class Selection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_string2);
 
         // Instantiate variables
         txtName = findViewById(R.id.txtName);
@@ -59,6 +58,16 @@ public class Selection extends AppCompatActivity {
             }
             DisplayOutput(dblSalary - dblDeduction);
         });
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_my_string2;
+    }
+
+    @Override
+    protected String getActivityName() {
+        return "Activity 2";
     }
 
     // Detect if edittext has changed

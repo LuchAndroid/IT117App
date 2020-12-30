@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Randomizer extends AppCompatActivity {
+public class Randomizer extends BaseActivity {
 
     EditText txtName, txtAmount, txtBet1, txtBet2, txtBet3, txtBet4, txtBet5, txtBet6, txtRandom1, txtRandom2, txtRandom3, txtRandom4, txtRandom5, txtRandom6;
     Button btnPlaceBet, btnShowBets, btnShowResults, btnStart;
@@ -48,7 +48,6 @@ public class Randomizer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_randomizer);
 
         // Initialize ArrayList and Arrays
         listLottoBalls = new ArrayList<>();
@@ -162,6 +161,16 @@ public class Randomizer extends AppCompatActivity {
         };
     }
 
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_randomizer;
+    }
+
+    @Override
+    protected String getActivityName() {
+        return "Activity 5";
+    }
+
     private void getLottoBets(){
         lottoBet[0] = tryParse(txtBet1);
         lottoBet[1] = tryParse(txtBet2);
@@ -175,7 +184,6 @@ public class Randomizer extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-
                 if (System.currentTimeMillis() - startTime < 1000) {
                     myHandler.postDelayed(this, 100);
                     int num = listLottoBalls.get(randomNumber(0,listLottoBalls.size()-1));
@@ -318,10 +326,6 @@ public class Randomizer extends AppCompatActivity {
     private void displayWinners(){
         dialogWinners.setMessage(createAnnouncement());
         dialogWinners.openDialog();
-    }
-
-    private void MsgBox(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private boolean isUnique(int num){

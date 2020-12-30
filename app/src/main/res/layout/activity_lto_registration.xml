@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#2974F4"
     android:gravity="center"
+    android:layout_below="@id/toolbar"
     android:orientation="vertical"
     tools:context=".LTORegistration">
 

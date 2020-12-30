@@ -10,7 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MyPet extends AppCompatActivity {
+public class MyPet extends BaseActivity {
 
     AutoCompleteTextView txtType, txtBreed;
     Button btnAdopt;
@@ -20,7 +20,6 @@ public class MyPet extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_pet);
 
         // Instantiate
         txtType = findViewById(R.id.txtType);
@@ -49,6 +48,16 @@ public class MyPet extends AppCompatActivity {
         btnAdopt.setOnClickListener(v -> {
             Toast.makeText(getApplicationContext(), "Thank you for adopting this pet!", Toast.LENGTH_LONG).show();
         });
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_my_pet;
+    }
+
+    @Override
+    protected String getActivityName() {
+        return "Activity 3";
     }
 
     private void updateBreedAutocomplete(String type){

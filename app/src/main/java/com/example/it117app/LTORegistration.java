@@ -1,6 +1,7 @@
 package com.example.it117app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,8 +17,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LTORegistration extends AppCompatActivity {
-
+public class LTORegistration extends BaseActivity {
     EditText txtPlateNumber;
     Button btnCheck, btnClear, btnClose;
     private static final  String new4Wheel = "^[a-zA-Z]{3}[- ]*\\d{4}";
@@ -36,8 +36,6 @@ public class LTORegistration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lto_registration);
-
         // Initialize
         txtPlateNumber = findViewById(R.id.txtPlateNumber);
         btnCheck = findViewById(R.id.btnCheck);
@@ -62,6 +60,16 @@ public class LTORegistration extends AppCompatActivity {
              System.exit(0);
          });
          btnCheck.setOnClickListener(v -> checkPlateNumber());
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_lto_registration;
+    }
+
+    @Override
+    protected String getActivityName() {
+        return "Activity 6";
     }
 
     private void checkPlateNumber(){
@@ -185,10 +193,6 @@ public class LTORegistration extends AppCompatActivity {
 
     private int getYear(){
         return Calendar.getInstance().get(Calendar.YEAR);
-    }
-
-    private void MsgBox(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     public static void hideSoftKeyboard(Activity activity) {
