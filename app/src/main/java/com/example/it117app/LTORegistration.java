@@ -194,9 +194,4 @@ public class LTORegistration extends BaseActivity {
     private int getYear(){
         return Calendar.getInstance().get(Calendar.YEAR);
     }
-
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-    }
 }

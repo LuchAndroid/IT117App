@@ -11,16 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<!--        <activity android:name=".BudgetBuddy">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
         <activity android:name=".SimpleCalculator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,6 +23,8 @@
         <activity android:name=".LoopTimer" />
         <activity android:name=".Randomizer" />
         <activity android:name=".LTORegistration" />
+         <activity android:name=".BudgetBuddy" />
+        <activity android:name=".RadioButton" />
         <activity android:name=".ViewWebsite" />
     </application>
 

@@ -3,12 +3,14 @@ package com.example.it117app;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Random;
 
 public abstract class BaseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -35,6 +39,10 @@ public abstract class BaseActivity extends AppCompatActivity implements AdapterV
     LinearLayout.LayoutParams wrapContent = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
     LinearLayout.LayoutParams spinWeight = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
     LinearLayout.LayoutParams btnWeight = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+
+    // Some stuff that can be used by others
+    Random rnd = new Random();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -148,9 +156,6 @@ public abstract class BaseActivity extends AppCompatActivity implements AdapterV
         }
     }
 
-    public void MsgBox(String message){
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -195,10 +200,10 @@ public abstract class BaseActivity extends AppCompatActivity implements AdapterV
                     intent = new Intent(this, LTORegistration.class);
                     break;
                 case "Activity 7":
-                    MsgBox("Activity 7");
+                    intent = new Intent(this, BudgetBuddy.class);
                     break;
                 case "Activity 8":
-                    MsgBox("Activity 8");
+                    intent = new Intent(this, RadioButton.class);
                     break;
                 case "Others":
                     intent = new Intent(this, ViewWebsite.class);
@@ -215,5 +220,17 @@ public abstract class BaseActivity extends AppCompatActivity implements AdapterV
         }catch (Exception e){
             MsgBox(e.getMessage());
         }
+    }
+
+    // Some Useful Methods
+    public int randomNumber(int min, int max){
+        return rnd.nextInt(max + 1 - min) + min;
+    }
+    public void MsgBox(String message){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

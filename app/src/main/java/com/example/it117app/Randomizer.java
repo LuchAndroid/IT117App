@@ -8,11 +8,9 @@ import android.text.InputFilter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 public class Randomizer extends BaseActivity {
 
@@ -20,7 +18,6 @@ public class Randomizer extends BaseActivity {
     Button btnPlaceBet, btnShowBets, btnShowResults, btnStart;
     TextView lblResult;
 
-    Random rnd = new Random();
     InputFilterMinMaxInteger numFilter;
     final Handler myHandler = new Handler();
 
@@ -199,10 +196,6 @@ public class Randomizer extends BaseActivity {
             }
         };
         myHandler.post(runnable);
-    }
-
-    private int randomNumber(int min, int max){
-        return rnd.nextInt(max + 1 - min) + min;
     }
 
     private void processResult(){
