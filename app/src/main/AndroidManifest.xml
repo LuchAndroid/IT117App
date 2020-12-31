@@ -24,8 +24,8 @@
         <activity android:name=".Randomizer" />
         <activity android:name=".LTORegistration" />
          <activity android:name=".BudgetBuddy" />
-        <activity android:name=".RadioButton" />
-        <activity android:name=".ViewWebsite" />
+        <activity android:name=".MyRadioButton" />
+            <activity android:name=".ViewWebsite" />
     </application>
 
 </manifest>

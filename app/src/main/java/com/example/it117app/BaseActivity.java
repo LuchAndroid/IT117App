@@ -174,10 +174,7 @@ public abstract class BaseActivity extends AppCompatActivity implements AdapterV
     }
 
     private void switchActivity(String activity){
-        if(activity.equalsIgnoreCase(activityName)){
-
-            return;
-        }
+        if(activity.equalsIgnoreCase(activityName)) return;
         try{
             Intent intent = null;
             switch (activity){
@@ -203,7 +200,7 @@ public abstract class BaseActivity extends AppCompatActivity implements AdapterV
                     intent = new Intent(this, BudgetBuddy.class);
                     break;
                 case "Activity 8":
-                    intent = new Intent(this, RadioButton.class);
+                    intent = new Intent(this, MyRadioButton.class);
                     break;
                 case "Others":
                     intent = new Intent(this, ViewWebsite.class);

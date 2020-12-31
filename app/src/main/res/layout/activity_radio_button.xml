@@ -4,72 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".RadioButton">
+    android:background="#534040"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".MyRadioButton">
 
-    <RadioGroup
-        android:id="@+id/rdGroup"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvQuestion"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="40dp"
-        android:orientation="vertical">
+        android:padding="5dp">
 
-        <RadioButton
-            android:id="@+id/rdoNevermind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="150dp"
-            android:layout_marginTop="208dp"
-            android:text="Nevermind"
-            android:textColor="#FFFFFF" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <RadioButton
-            android:id="@+id/rdoNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="149dp"
-            android:layout_marginTop="164dp"
-            android:text="NO"
-            android:textColor="#FFFFFF" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Are you handsome?"
+                android:textColor="#000000"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/rdoYes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="151dp"
-            android:layout_marginTop="120dp"
-            android:text="YES"
-            android:textColor="#FFFFFF" />
-    </RadioGroup>
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp">
 
-    <TextView
-        android:id="@+id/tvQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="143dp"
-        android:layout_marginTop="81dp"
-        android:text="Are you handsome?"
-        android:textColor="#F0FFFFFF" />
+                <RadioButton
+                    android:id="@+id/rdoYes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="YES"
+                    android:onClick="rdoIsClicked"/>
 
-    <Button
-        android:id="@+id/btnClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="262dp"
-        android:text="Click" />
+                <RadioButton
+                    android:id="@+id/rdoNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NO"
+                    android:onClick="rdoIsClicked"/>
 
+                <RadioButton
+                    android:id="@+id/rdoNevermind"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Never mind"
+                    android:onClick="rdoIsClicked"/>
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
